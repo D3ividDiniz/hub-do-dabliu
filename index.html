@@ -1,0 +1,2138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07090c">
+
+<title>DABLIU — Hub</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Share+Tech+Mono&display=swap');
+
+:root{
+  --bg:#07090c;
+  --fg:#f4f7fa;
+  --muted:#87909a;
+  --line:#59646d;
+  --accent:#b8f5ff;
+  --accent2:#4dd9f0;
+  --speed:420ms;
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:var(--bg);
+  color:var(--fg);
+}
+
+body{
+  font-family:"Share Tech Mono",monospace;
+  overflow:hidden;
+}
+
+button{
+  font:inherit;
+  color:inherit;
+  background:none;
+  border:0;
+  border-radius:0;
+  cursor:pointer;
+}
+
+button:focus-visible{
+  outline:1px solid var(--accent);
+  outline-offset:3px;
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+  height:100dvh;
+  position:relative;
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(77,217,240,.055),
+      transparent 35%
+    ),
+    linear-gradient(
+      115deg,
+      #06080b,
+      #0a0e13 52%,
+      #05070a
+    );
+}
+
+.app:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.22;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 3px,
+      rgba(255,255,255,.018) 3px 4px
+    );
+}
+
+.app:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+
+  box-shadow:
+    inset 0 0 130px #000;
+
+  z-index:20;
+}
+
+
+/* =========================================================
+   BOOT SCREEN
+========================================================= */
+
+.boot{
+  position:absolute;
+  inset:0;
+  z-index:30;
+
+  display:grid;
+  place-items:center;
+
+  text-align:center;
+
+  background:#06080b;
+
+  transition:
+    opacity .6s,
+    visibility .6s;
+}
+
+.boot.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.boot-logo{
+  font-family:Orbitron,sans-serif;
+
+  font-size:
+    clamp(42px,13vw,100px);
+
+  letter-spacing:.18em;
+}
+
+.boot-sub{
+  color:var(--muted);
+
+  letter-spacing:.42em;
+
+  font-size:10px;
+
+  margin-top:15px;
+}
+
+.boot-line{
+  width:min(280px,60vw);
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--accent),
+      transparent
+    );
+
+  margin:28px auto;
+}
+
+.boot-start{
+  font-size:13px;
+
+  letter-spacing:.3em;
+
+  padding:12px 25px;
+
+  border:1px solid var(--line);
+}
+
+.boot-start:hover{
+  border-color:var(--accent);
+
+  box-shadow:
+    0 0 20px rgba(77,217,240,.1);
+}
+
+
+/* =========================================================
+   HUB
+========================================================= */
+
+.hub{
+  position:absolute;
+  inset:0;
+
+  opacity:0;
+
+  transform:scale(1.02);
+
+  transition:
+    opacity .6s,
+    transform .6s;
+}
+
+.hub.show{
+  opacity:1;
+  transform:none;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  position:absolute;
+
+  top:0;
+  left:0;
+  right:0;
+
+  height:70px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:
+    0
+    clamp(18px,5vw,60px);
+
+  z-index:10;
+}
+
+.logo{
+  font-family:Orbitron,sans-serif;
+
+  font-size:16px;
+
+  letter-spacing:.25em;
+}
+
+.header-right{
+  display:flex;
+
+  gap:20px;
+
+  color:var(--muted);
+
+  font-size:10px;
+
+  letter-spacing:.18em;
+}
+
+.header-btn{
+  padding:7px 0;
+
+  border-bottom:1px solid transparent;
+}
+
+.header-btn:hover{
+  color:#fff;
+
+  border-color:var(--accent);
+}
+
+
+/* =========================================================
+   CAROUSEL
+========================================================= */
+
+.carousel{
+  position:absolute;
+
+  inset:
+    70px
+    0
+    118px
+    0;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  touch-action:pan-y;
+}
+
+.stage{
+  position:relative;
+
+  width:100%;
+  height:100%;
+
+  max-width:1250px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  perspective:1000px;
+}
+
+
+/* =========================================================
+   PROJECT CARD
+========================================================= */
+
+.project{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:min(58vw,620px);
+
+  height:min(61vh,520px);
+
+  min-height:350px;
+
+  transform:
+    translate(-50%,-50%);
+
+  transition:
+    transform var(--speed)
+      cubic-bezier(.2,.8,.2,1),
+
+    opacity var(--speed),
+
+    filter var(--speed);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  filter:blur(2px);
+}
+
+.project.center{
+  opacity:1;
+
+  pointer-events:auto;
+
+  filter:none;
+
+  z-index:5;
+}
+
+.project.left{
+  opacity:.35;
+
+  transform:
+    translate(
+      calc(-50% - min(45vw,500px)),
+      -50%
+    )
+    scale(.67)
+    rotateY(18deg);
+
+  filter:blur(.6px);
+
+  z-index:2;
+}
+
+.project.right{
+  opacity:.35;
+
+  transform:
+    translate(
+      calc(-50% + min(45vw,500px)),
+      -50%
+    )
+    scale(.67)
+    rotateY(-18deg);
+
+  filter:blur(.6px);
+
+  z-index:2;
+}
+
+.project.far{
+  opacity:0;
+  z-index:1;
+}
+
+
+/* =========================================================
+   PROJECT ART
+========================================================= */
+
+.project-art{
+  position:absolute;
+  inset:0;
+
+  overflow:hidden;
+
+  border:1px solid #414b54;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0d151b,
+      #080b0e 55%,
+      #11171c
+    );
+
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.45),
+    0 0 0 1px
+      rgba(255,255,255,.025)
+      inset;
+}
+
+.project-art:before{
+  content:"";
+
+  position:absolute;
+
+  inset:-30%;
+
+  background:
+
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 42px,
+      rgba(184,245,255,.035) 43px,
+      transparent 44px
+    ),
+
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 42px,
+      rgba(184,245,255,.025) 43px,
+      transparent 44px
+    );
+
+  transform:rotate(-14deg);
+}
+
+.project-art:after{
+  content:"";
+
+  position:absolute;
+
+  width:150%;
+  height:1px;
+
+  background:var(--accent);
+
+  opacity:.25;
+
+  top:35%;
+  left:-25%;
+
+  transform:rotate(-12deg);
+
+  box-shadow:
+    0 0 25px var(--accent2);
+}
+
+
+/* Individual themes */
+
+.project-art[data-theme="dark"]{
+  background:
+    radial-gradient(
+      circle,
+      rgba(130,80,255,.1),
+      transparent 30%
+    ),
+    linear-gradient(
+      140deg,
+      #09070d,
+      #050506
+    );
+}
+
+.project-art[data-theme="dog"]{
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.12),
+      transparent 28%
+    ),
+    linear-gradient(
+      140deg,
+      #111,
+      #080808
+    );
+}
+
+.project-art[data-theme="bingo"]{
+  background:
+    radial-gradient(
+      circle,
+      rgba(77,217,240,.1),
+      transparent 30%
+    ),
+    linear-gradient(
+      140deg,
+      #071117,
+      #06080a
+    );
+}
+
+.project-art[data-theme="paint"]{
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(255,255,255,.1),
+      transparent 20%
+    ),
+    linear-gradient(
+      140deg,
+      #101010,
+      #070707
+    );
+}
+
+
+/* =========================================================
+   PROJECT TEXT
+========================================================= */
+
+.project-copy{
+  position:absolute;
+
+  inset:0;
+
+  padding:
+    clamp(22px,4vw,45px);
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:flex-end;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 35%,
+      rgba(0,0,0,.15) 48%,
+      rgba(0,0,0,.94) 100%
+    );
+}
+
+.project-index{
+  font-size:10px;
+
+  letter-spacing:.2em;
+
+  color:var(--accent);
+
+  margin-bottom:auto;
+}
+
+.project-name{
+  font-family:Orbitron,sans-serif;
+
+  font-size:
+    clamp(27px,4.5vw,52px);
+
+  line-height:1.05;
+
+  letter-spacing:.06em;
+
+  text-transform:uppercase;
+
+  max-width:90%;
+
+  text-shadow:
+    0 0 18px
+    rgba(184,245,255,.08);
+}
+
+.project-type{
+  font-size:10px;
+
+  color:var(--muted);
+
+  letter-spacing:.22em;
+
+  margin-top:12px;
+}
+
+.project-desc{
+  font-size:11px;
+
+  color:#b5bdc4;
+
+  max-width:520px;
+
+  line-height:1.6;
+
+  margin:14px 0 18px;
+}
+
+.enter{
+  align-self:flex-start;
+
+  border:1px solid #76818b;
+
+  padding:10px 16px;
+
+  font-size:11px;
+
+  letter-spacing:.18em;
+
+  background:
+    rgba(5,7,9,.55);
+}
+
+.enter:hover{
+  border-color:var(--accent);
+
+  color:var(--accent);
+
+  box-shadow:
+    0 0 22px
+    rgba(77,217,240,.12);
+}
+
+
+/* =========================================================
+   ARROWS
+========================================================= */
+
+.nav-arrow{
+  position:absolute;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  z-index:9;
+
+  width:58px;
+  height:100px;
+
+  color:#a9b2b9;
+
+  font-size:27px;
+}
+
+.nav-arrow:hover{
+  color:#fff;
+}
+
+.nav-arrow.prev{
+  left:clamp(5px,3vw,50px);
+}
+
+.nav-arrow.next{
+  right:clamp(5px,3vw,50px);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:118px;
+
+  border-top:
+    1px solid
+    rgba(93,104,114,.45);
+
+  z-index:10;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  gap:12px;
+
+  padding:
+    0
+    clamp(18px,5vw,60px);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7,9,12,.1),
+      rgba(7,9,12,.75)
+    );
+}
+
+.footer-top{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  font-size:10px;
+
+  color:var(--muted);
+
+  letter-spacing:.16em;
+}
+
+.dots{
+  display:flex;
+
+  justify-content:center;
+
+  gap:7px;
+}
+
+.dot{
+  width:5px;
+  height:5px;
+
+  border:1px solid #5c6670;
+
+  transform:rotate(45deg);
+}
+
+.dot.active{
+  background:var(--accent);
+
+  border-color:var(--accent);
+
+  box-shadow:
+    0 0 10px var(--accent2);
+}
+
+
+/* =========================================================
+   LIBRARY
+========================================================= */
+
+.library{
+  position:absolute;
+
+  inset:0;
+
+  z-index:40;
+
+  background:
+    rgba(5,7,9,.97);
+
+  opacity:0;
+
+  visibility:hidden;
+
+  transform:translateY(18px);
+
+  transition:.35s;
+
+  padding:
+    clamp(18px,5vw,60px);
+
+  overflow:auto;
+}
+
+.library.show{
+  opacity:1;
+
+  visibility:visible;
+
+  transform:none;
+}
+
+.library-head{
+  display:flex;
+
+  align-items:end;
+
+  justify-content:space-between;
+
+  border-bottom:
+    1px solid var(--line);
+
+  padding-bottom:14px;
+}
+
+.library-title{
+  font-family:Orbitron;
+
+  font-size:
+    clamp(24px,4vw,40px);
+
+  letter-spacing:.12em;
+}
+
+.close{
+  font-size:11px;
+
+  letter-spacing:.18em;
+
+  color:var(--muted);
+
+  padding:8px 0;
+
+  border-bottom:1px solid transparent;
+}
+
+.close:hover{
+  color:#fff;
+
+  border-color:#fff;
+}
+
+.library-list{
+  margin:20px 0 0;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:
+    0 30px;
+}
+
+.lib-item{
+  display:grid;
+
+  grid-template-columns:
+    45px
+    1fr
+    auto;
+
+  align-items:center;
+
+  gap:12px;
+
+  min-height:62px;
+
+  border-bottom:
+    1px solid #242b31;
+
+  text-align:left;
+}
+
+.lib-item:hover,
+.lib-item.active{
+  background:
+    rgba(184,245,255,.035);
+}
+
+.lib-num{
+  color:#5d6872;
+
+  font-size:11px;
+}
+
+.lib-name{
+  font-family:Orbitron;
+
+  font-size:13px;
+
+  letter-spacing:.08em;
+}
+
+.lib-type{
+  font-size:9px;
+
+  color:#707b84;
+
+  letter-spacing:.15em;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+  bottom:128px;
+
+  transform:
+    translate(-50%,20px);
+
+  opacity:0;
+
+  z-index:100;
+
+  pointer-events:none;
+
+  border:1px solid #53606a;
+
+  background:#090d11;
+
+  padding:8px 13px;
+
+  font-size:10px;
+
+  letter-spacing:.14em;
+
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+  .header{
+    height:58px;
+
+    padding:0 18px;
+  }
+
+  .header-right span{
+    display:none;
+  }
+
+  .carousel{
+    inset:
+      58px
+      0
+      110px
+      0;
+  }
+
+  .project{
+    width:min(78vw,500px);
+
+    height:min(61vh,500px);
+
+    min-height:390px;
+  }
+
+  .project.left{
+    transform:
+      translate(
+        calc(-50% - 73vw),
+        -50%
+      )
+      scale(.7)
+      rotateY(15deg);
+  }
+
+  .project.right{
+    transform:
+      translate(
+        calc(-50% + 73vw),
+        -50%
+      )
+      scale(.7)
+      rotateY(-15deg);
+  }
+
+  .nav-arrow{
+    width:42px;
+  }
+
+  .project-name{
+    font-size:
+      clamp(24px,7vw,38px);
+  }
+
+  .project-desc{
+    font-size:10px;
+  }
+
+  .footer{
+    height:110px;
+
+    padding:0 18px;
+  }
+
+  .library-list{
+    grid-template-columns:1fr;
+  }
+
+  .library{
+    padding:18px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *{
+    animation:none!important;
+    transition:none!important;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =====================================================
+       BOOT
+  ====================================================== -->
+
+  <section
+    class="boot"
+    id="boot">
+
+    <div>
+
+      <div class="boot-logo">
+        DABLIU
+      </div>
+
+      <div class="boot-sub">
+        DIGITAL PROJECT LIBRARY
+      </div>
+
+      <div class="boot-line"></div>
+
+      <button
+        class="boot-start"
+        id="bootStart">
+
+        PRESS START
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       HUB
+  ====================================================== -->
+
+  <main
+    class="hub"
+    id="hub">
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+      <div class="logo">
+        DABLIU
+      </div>
+
+
+      <div class="header-right">
+
+        <span id="clock">
+          00:00
+        </span>
+
+
+        <button
+          class="header-btn"
+          id="libraryBtn">
+
+          BIBLIOTECA
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- CAROUSEL -->
+
+    <section
+      class="carousel"
+      id="carousel">
+
+
+      <button
+        class="nav-arrow prev"
+        id="prev"
+        aria-label="Projeto anterior">
+
+        ‹
+
+      </button>
+
+
+      <div
+        class="stage"
+        id="stage">
+      </div>
+
+
+      <button
+        class="nav-arrow next"
+        id="next"
+        aria-label="Próximo projeto">
+
+        ›
+
+      </button>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <div class="footer-top">
+
+        <span id="counter">
+          01 / 12
+        </span>
+
+        <span>
+          ← →
+          DESLIZE / NAVEGUE
+        </span>
+
+        <span>
+          ● ONLINE
+        </span>
+
+      </div>
+
+
+      <div
+        class="dots"
+        id="dots">
+      </div>
+
+    </footer>
+
+  </main>
+
+
+  <!-- =====================================================
+       LIBRARY
+  ====================================================== -->
+
+  <section
+    class="library"
+    id="library">
+
+
+    <div class="library-head">
+
+      <div>
+
+        <div
+          style="
+            font-size:10px;
+            color:#7c8790;
+            letter-spacing:.22em;
+            margin-bottom:8px
+          ">
+
+          DABLIU / SYSTEM
+
+        </div>
+
+
+        <div class="library-title">
+          BIBLIOTECA
+        </div>
+
+      </div>
+
+
+      <button
+        class="close"
+        id="closeLibrary">
+
+        ESC / FECHAR
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="library-list"
+      id="libraryList">
+    </div>
+
+  </section>
+
+
+  <!-- TOAST -->
+
+  <div
+    class="toast"
+    id="toast">
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   PROJETOS
+========================================================= */
+
+const projects = [
+
+  {
+    name:"TORRE DE DANOI",
+    type:"GAME · PUZZLE",
+    desc:
+      "O clássico jogo de lógica. 100 níveis, recordes e progresso local.",
+    url:
+      "https://hanoi-23d2.onrender.com",
+    theme:"hanoi"
+  },
+
+  {
+    name:"BINGO",
+    type:"GAME",
+    desc:
+      "Bingo digital para jogar direto no navegador.",
+    url:
+      "https://jogo-bingo.onrender.com",
+    theme:"bingo"
+  },
+
+  {
+    name:"PONTINHOS",
+    type:"GAME",
+    desc:
+      "Um jogo simples de estratégia e precisão.",
+    url:
+      "https://jogo-dos-pontinhos.onrender.com",
+    theme:"grid"
+  },
+
+  {
+    name:"TERNO",
+    type:"GAME",
+    desc:
+      "Experiência de jogo publicada no GitHub Pages.",
+    url:
+      "https://d3ividdiniz.github.io/terno_jogo_js/",
+    theme:"terno"
+  },
+
+  {
+    name:"DARK HISTORIE",
+    type:"GAME · STORY",
+    desc:
+      "Uma experiência narrativa com estética sombria.",
+    url:
+      "https://dark-historie-game.onrender.com",
+    theme:"dark"
+  },
+
+  {
+    name:"ROLETA RUSSA DO CAFÉ",
+    type:"GAME",
+    desc:
+      "Uma roleta para decidir o destino do próximo café.",
+    url:
+      "https://roleta-russa-do-cafe.onrender.com",
+    theme:"coffee"
+  },
+
+  {
+    name:"RANKING DOG",
+    type:"GAME · SOCIAL",
+    desc:
+      "Monte e compare seu ranking de cachorros.",
+    url:
+      "https://ranking-dog.onrender.com",
+    theme:"dog"
+  },
+
+  {
+    name:"PERIODIC TABLE",
+    type:"LAB · TOOL",
+    desc:
+      "Uma tabela periódica interativa.",
+    url:
+      "https://p-e-r-i-and-t-a-b-l-e.onrender.com",
+    theme:"periodic"
+  },
+
+  {
+    name:"PAINT JS",
+    type:"LAB",
+    desc:
+      "Experimento de desenho feito para a web.",
+    url:
+      "https://d3ividdiniz.github.io/paint_js/",
+    theme:"paint"
+  },
+
+  {
+    name:"HUB TOOLS",
+    type:"TOOL",
+    desc:
+      "Coleção de ferramentas úteis em um só lugar.",
+    url:
+      "https://hub-tools-ebon.vercel.app",
+    theme:"tools"
+  },
+
+  {
+    name:"FOCO",
+    type:"APP · ESTUDOS",
+    desc:
+      "Controle de tempo e estudos.",
+    url:
+      "https://foco-4yd0.onrender.com",
+    theme:"focus"
+  },
+
+  {
+    name:"FITAPP",
+    type:"APP · FITNESS",
+    desc:
+      "Seu espaço digital para academia e treino.",
+    url:
+      "https://fitapp-ohq4swqx.manus.space",
+    theme:"fit"
+  }
+
+];
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+const stage =
+  document.getElementById("stage");
+
+const dots =
+  document.getElementById("dots");
+
+const list =
+  document.getElementById("libraryList");
+
+let current =
+  Number(
+    localStorage.getItem(
+      "dabliu_current"
+    ) || 0
+  );
+
+
+current =
+  (
+    current %
+    projects.length +
+    projects.length
+  )
+  %
+  projects.length;
+
+
+/* =========================================================
+   BUILD
+========================================================= */
+
+function build(){
+
+  stage.innerHTML = "";
+
+  dots.innerHTML = "";
+
+  list.innerHTML = "";
+
+
+  projects.forEach(
+    (project,index) => {
+
+
+      /* CARD */
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+
+      card.className =
+        "project";
+
+
+      card.innerHTML = `
+
+        <div
+          class="project-art"
+          data-theme="${project.theme}">
+
+          <div
+            class="project-copy">
+
+            <div
+              class="project-index">
+
+              ${String(index+1).padStart(2,"0")}
+              /
+              ${String(projects.length).padStart(2,"0")}
+
+            </div>
+
+
+            <div
+              class="project-name">
+
+              ${project.name}
+
+            </div>
+
+
+            <div
+              class="project-type">
+
+              ${project.type}
+
+            </div>
+
+
+            <div
+              class="project-desc">
+
+              ${project.desc}
+
+            </div>
+
+
+            <button
+              class="enter">
+
+              X &nbsp; ENTRAR
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      card
+        .querySelector(".enter")
+        .addEventListener(
+          "click",
+          () =>
+            openProject(index)
+        );
+
+
+      stage.appendChild(card);
+
+
+      /* DOT */
+
+      const dot =
+        document.createElement(
+          "button"
+        );
+
+
+      dot.className =
+        "dot";
+
+
+      dot.setAttribute(
+        "aria-label",
+        `Ir para ${project.name}`
+      );
+
+
+      dot.addEventListener(
+        "click",
+        () => go(index)
+      );
+
+
+      dots.appendChild(dot);
+
+
+      /* LIBRARY ITEM */
+
+      const item =
+        document.createElement(
+          "button"
+        );
+
+
+      item.className =
+        "lib-item";
+
+
+      item.innerHTML = `
+
+        <span class="lib-num">
+
+          ${String(index+1).padStart(2,"0")}
+
+        </span>
+
+
+        <span class="lib-name">
+
+          ${project.name}
+
+        </span>
+
+
+        <span class="lib-type">
+
+          ${project.type}
+
+        </span>
+
+      `;
+
+
+      item.addEventListener(
+        "click",
+        () => {
+
+          go(index);
+
+          closeLibrary();
+
+        }
+      );
+
+
+      list.appendChild(item);
+
+    }
+  );
+
+
+  render();
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render(){
+
+  const total =
+    projects.length;
+
+
+  [
+    ...stage.children
+  ]
+  .forEach(
+    (element,index) => {
+
+      let distance =
+        index-current;
+
+
+      if(
+        distance >
+        total/2
+      ){
+
+        distance -=
+          total;
+
+      }
+
+
+      if(
+        distance <
+        -total/2
+      ){
+
+        distance +=
+          total;
+
+      }
+
+
+      element.className =
+        "project";
+
+
+      if(
+        distance === 0
+      ){
+
+        element.classList.add(
+          "center"
+        );
+
+      }
+
+      else if(
+        distance === -1
+      ){
+
+        element.classList.add(
+          "left"
+        );
+
+      }
+
+      else if(
+        distance === 1
+      ){
+
+        element.classList.add(
+          "right"
+        );
+
+      }
+
+      else{
+
+        element.classList.add(
+          "far"
+        );
+
+      }
+
+    }
+  );
+
+
+  [
+    ...dots.children
+  ]
+  .forEach(
+    (dot,index) => {
+
+      dot.classList.toggle(
+        "active",
+        index === current
+      );
+
+    }
+  );
+
+
+  [
+    ...list.children
+  ]
+  .forEach(
+    (item,index) => {
+
+      item.classList.toggle(
+        "active",
+        index === current
+      );
+
+    }
+  );
+
+
+  document
+    .getElementById("counter")
+    .textContent =
+      `${String(current+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
+
+
+  localStorage.setItem(
+    "dabliu_current",
+    current
+  );
+
+}
+
+
+/* =========================================================
+   NAVEGAÇÃO
+========================================================= */
+
+function go(index){
+
+  current =
+    (
+      index +
+      projects.length
+    )
+    %
+    projects.length;
+
+
+  render();
+
+}
+
+
+function next(){
+
+  go(current + 1);
+
+}
+
+
+function previous(){
+
+  go(current - 1);
+
+}
+
+
+/* =========================================================
+   ABRIR PROJETO
+========================================================= */
+
+function openProject(index){
+
+  showToast(
+    "ABRINDO / " +
+    projects[index].name
+  );
+
+
+  setTimeout(
+    () => {
+
+      window.location.href =
+        projects[index].url;
+
+    },
+    180
+  );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(text){
+
+  const element =
+    document.getElementById(
+      "toast"
+    );
+
+
+  element.textContent =
+    text;
+
+
+  element.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    showToast.timer
+  );
+
+
+  showToast.timer =
+    setTimeout(
+      () => {
+
+        element.classList.remove(
+          "show"
+        );
+
+      },
+      900
+    );
+
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+document
+  .getElementById("prev")
+  .addEventListener(
+    "click",
+    previous
+  );
+
+
+document
+  .getElementById("next")
+  .addEventListener(
+    "click",
+    next
+  );
+
+
+/* =========================================================
+   SWIPE MOBILE
+========================================================= */
+
+let startX = 0;
+
+let startY = 0;
+
+
+const carousel =
+  document.getElementById(
+    "carousel"
+  );
+
+
+carousel.addEventListener(
+  "touchstart",
+  event => {
+
+    startX =
+      event.touches[0].clientX;
+
+    startY =
+      event.touches[0].clientY;
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+carousel.addEventListener(
+  "touchend",
+  event => {
+
+    const endX =
+      event.changedTouches[0].clientX;
+
+    const endY =
+      event.changedTouches[0].clientY;
+
+
+    const dx =
+      endX-startX;
+
+
+    const dy =
+      endY-startY;
+
+
+    if(
+      Math.abs(dx) > 55 &&
+      Math.abs(dx) >
+      Math.abs(dy)*1.2
+    ){
+
+      if(dx < 0){
+
+        next();
+
+      }else{
+
+        previous();
+
+      }
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+/* =========================================================
+   TECLADO
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      document
+        .getElementById("library")
+        .classList
+        .contains("show")
+    ){
+
+      if(
+        event.key === "Escape"
+      ){
+
+        closeLibrary();
+
+      }
+
+      return;
+
+    }
+
+
+    if(
+      event.key === "ArrowRight"
+    ){
+
+      next();
+
+    }
+
+
+    if(
+      event.key === "ArrowLeft"
+    ){
+
+      previous();
+
+    }
+
+
+    if(
+      event.key === "Enter"
+    ){
+
+      openProject(
+        current
+      );
+
+    }
+
+
+    if(
+      event.key.toLowerCase() === "l"
+    ){
+
+      openLibrary();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   MOUSE WHEEL
+========================================================= */
+
+let wheelLock =
+  false;
+
+
+carousel.addEventListener(
+  "wheel",
+  event => {
+
+    if(wheelLock)
+      return;
+
+
+    if(
+      Math.abs(event.deltaX) > 10 ||
+      Math.abs(event.deltaY) > 30
+    ){
+
+      wheelLock =
+        true;
+
+
+      if(
+        event.deltaX > 0 ||
+        event.deltaY > 0
+      ){
+
+        next();
+
+      }else{
+
+        previous();
+
+      }
+
+
+      setTimeout(
+        () => {
+
+          wheelLock =
+            false;
+
+        },
+        450
+      );
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+/* =========================================================
+   BIBLIOTECA
+========================================================= */
+
+const library =
+  document.getElementById(
+    "library"
+  );
+
+
+function openLibrary(){
+
+  library.classList.add(
+    "show"
+  );
+
+}
+
+
+function closeLibrary(){
+
+  library.classList.remove(
+    "show"
+  );
+
+}
+
+
+document
+  .getElementById("libraryBtn")
+  .addEventListener(
+    "click",
+    openLibrary
+  );
+
+
+document
+  .getElementById("closeLibrary")
+  .addEventListener(
+    "click",
+    closeLibrary
+  );
+
+
+/* =========================================================
+   BOOT
+========================================================= */
+
+document
+  .getElementById("bootStart")
+  .addEventListener(
+    "click",
+    () => {
+
+      document
+        .getElementById("boot")
+        .classList
+        .add("hide");
+
+
+      document
+        .getElementById("hub")
+        .classList
+        .add("show");
+
+    }
+  );
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock(){
+
+  const now =
+    new Date();
+
+
+  const hours =
+    String(
+      now.getHours()
+    ).padStart(2,"0");
+
+
+  const minutes =
+    String(
+      now.getMinutes()
+    ).padStart(2,"0");
+
+
+  document
+    .getElementById("clock")
+    .textContent =
+      `${hours}:${minutes}`;
+
+}
+
+
+updateClock();
+
+
+setInterval(
+  updateClock,
+  10000
+);
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+build();
+
+</script>
+
+</body>
+</html>
