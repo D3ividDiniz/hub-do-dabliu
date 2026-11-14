@@ -1243,6 +1243,7 @@ button{
 const projects = [
 
   {
+    id:"hanoi",
     name:"TORRE DE DANOI",
     type:"GAME · PUZZLE",
     desc:"O clássico jogo de lógica. 100 níveis, recordes e progresso local.",
@@ -1251,6 +1252,7 @@ const projects = [
   },
 
   {
+    id:"bingo",
     name:"BINGO",
     type:"GAME",
     desc:"Bingo digital para jogar direto no navegador.",
@@ -1259,6 +1261,7 @@ const projects = [
   },
 
   {
+    id:"pontinhos",
     name:"PONTINHOS",
     type:"GAME",
     desc:"Um jogo simples de estratégia e precisão.",
@@ -1267,6 +1270,7 @@ const projects = [
   },
 
   {
+    id:"terno",
     name:"TERNO",
     type:"GAME",
     desc:"Experiência de jogo publicada no GitHub Pages.",
@@ -1275,6 +1279,7 @@ const projects = [
   },
 
   {
+    id:"dark-historie",
     name:"DARK HISTORIE",
     type:"GAME · STORY",
     desc:"Uma experiência narrativa com estética sombria.",
@@ -1283,6 +1288,7 @@ const projects = [
   },
 
   {
+    id:"roleta-cafe",
     name:"ROLETA RUSSA DO CAFÉ",
     type:"GAME",
     desc:"Uma roleta para decidir o destino do próximo café.",
@@ -1291,6 +1297,7 @@ const projects = [
   },
 
   {
+    id:"ranking-dog",
     name:"RANKING DOG",
     type:"GAME · SOCIAL",
     desc:"Monte e compare seu ranking de cachorros.",
@@ -1299,6 +1306,7 @@ const projects = [
   },
 
   {
+    id:"periodic-table",
     name:"PERIODIC TABLE",
     type:"LAB · TOOL",
     desc:"Uma tabela periódica interativa.",
@@ -1307,6 +1315,7 @@ const projects = [
   },
 
   {
+    id:"paint-js",
     name:"PAINT JS",
     type:"LAB",
     desc:"Experimento de desenho feito para a web.",
@@ -1315,6 +1324,7 @@ const projects = [
   },
 
   {
+    id:"hub-tools",
     name:"HUB TOOLS",
     type:"TOOL",
     desc:"Coleção de ferramentas úteis em um só lugar.",
@@ -1323,19 +1333,75 @@ const projects = [
   },
 
   {
+    id:"foco",
     name:"FOCO",
     type:"APP · ESTUDOS",
     desc:"Controle de tempo e estudos.",
-    url:"https://foco-4yd0.onrender.com",
+    url:"https://foco-4yd7.onrender.com",
     theme:"focus"
   },
 
   {
+    id:"fit-app",
     name:"FITAPP",
     type:"APP · FITNESS",
     desc:"Seu espaço digital para academia e treino.",
     url:"https://dabliu.fit",
     theme:"fit"
+  },
+
+  {
+    id:"peleleca",
+    name:"PELELECA",
+    type:"APP",
+    desc:"Um espaço digital para acompanhar e organizar momentos do dia a dia.",
+    url:"https://peleleca.onrender.com/",
+    theme:"app"
+  },
+
+  {
+    id:"lacos-acucar",
+    name:"LAÇOS DE AÇÚCAR",
+    type:"APP",
+    desc:"Uma experiência delicada para celebrar momentos especiais.",
+    url:"https://lacos-acucar.onrender.com/",
+    theme:"app"
+  },
+
+  {
+    id:"dabliu-notes",
+    name:"DABLIU NOTES",
+    type:"APP · PRODUTIVIDADE",
+    desc:"Anote ideias e mantenha suas notas organizadas.",
+    url:"https://dabliu-notes.onrender.com/",
+    theme:"notes"
+  },
+
+  {
+    id:"function-game",
+    name:"FUNCTION GAME",
+    type:"GAME · PUZZLE",
+    desc:"Um jogo de desafios baseados em funções e lógica.",
+    url:"https://functiongame.onrender.com/",
+    theme:"grid"
+  },
+
+  {
+    id:"day-by-day",
+    name:"DAY BY DAY",
+    type:"APP · ORGANIZAÇÃO",
+    desc:"Acompanhe sua rotina e seus objetivos dia após dia.",
+    url:"https://day-by-day-srru.onrender.com/",
+    theme:"app"
+  },
+
+  {
+    id:"cronometre",
+    name:"CRONOMETRE",
+    type:"TOOL · TEMPO",
+    desc:"Um cronômetro simples para medir o tempo das atividades.",
+    url:"https://c-r-o-n-o-m-e-t-r-e.onrender.com/",
+    theme:"tools"
   }
 
 ];
@@ -1401,10 +1467,28 @@ function getAccessHistory(){
         ) || "{}"
       );
 
-    return value &&
-      typeof value === "object"
-      ? value
-      : {};
+    if(!value || typeof value !== "object"){
+      return {};
+    }
+
+    const history = {};
+
+    Object.entries(value).forEach(([key, accesses]) => {
+      const project = /^\d+$/.test(key)
+        ? projects[Number(key)]
+        : projects.find(item => item.id === key);
+
+      if(!project || !Array.isArray(accesses)){
+        return;
+      }
+
+      history[project.id] = [
+        ...(history[project.id] || []),
+        ...accesses
+      ];
+    });
+
+    return history;
 
   }catch{
 
@@ -1437,7 +1521,7 @@ function registerAccess(index){
     getAccessHistory();
 
   const key =
-    String(index);
+    projects[index].id;
 
 
   if(
@@ -1494,9 +1578,7 @@ function lastAccess(index){
     getAccessHistory();
 
   const accesses =
-    history[
-      String(index)
-    ];
+    history[projects[index].id];
 
 
   if(
@@ -1529,9 +1611,7 @@ function accessCountSince(
     getAccessHistory();
 
   const accesses =
-    history[
-      String(index)
-    ];
+    history[projects[index].id];
 
 
   if(
