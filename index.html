@@ -1027,6 +1027,42 @@ button{
   color:#68647a;
 }
 
+@media(max-width:700px){
+  .library-group-grid#dabliuCollection{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .lib-item--brand{
+    min-width:0;
+  }
+
+  .lib-item--brand .lib-visual{
+    height:auto;
+    aspect-ratio:1.72;
+    min-height:0;
+  }
+
+  .lib-item--brand .lib-info{
+    padding:10px 10px 32px;
+  }
+
+  .lib-item--brand .lib-name{
+    font-size:10px;
+    letter-spacing:.03em;
+  }
+
+  .lib-item--brand .lib-num{
+    font-size:8px;
+  }
+
+  .lib-item--brand .lib-type,
+  .lib-item--brand .lib-usage{
+    font-size:7px;
+    letter-spacing:.08em;
+  }
+}
+
 .lib-badge{
   position:absolute;
 
