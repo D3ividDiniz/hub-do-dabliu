@@ -455,6 +455,37 @@ button{
     );
 }
 
+.project-art[data-collection="dablius"]{
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(5,7,12,.08) 15%,
+      rgba(5,7,12,.18) 48%,
+      rgba(5,7,12,.82) 100%
+    ),
+    var(--project-banner);
+  background-position:center;
+  background-size:cover;
+  border-color:rgba(193,184,255,.52);
+}
+
+.project-art[data-collection="dablius"]:before{
+  inset:0;
+  background:linear-gradient(115deg,rgba(5,7,12,.28),transparent 70%);
+  transform:none;
+}
+
+.project-art[data-collection="dablius"]:after{
+  top:0;
+  left:0;
+  width:100%;
+  height:2px;
+  opacity:.72;
+  background:linear-gradient(90deg,#d7c5ff,#75e2db,transparent 72%);
+  box-shadow:0 0 18px rgba(174,151,255,.45);
+  transform:none;
+}
+
 
 /* =========================================================
    PROJECT COPY
@@ -486,6 +517,24 @@ button{
   color:var(--accent);
 
   margin-bottom:auto;
+}
+
+.project-brand{
+  display:none;
+  position:absolute;
+  top:clamp(20px,3vw,34px);
+  right:clamp(20px,3vw,34px);
+  padding:8px 11px;
+  border:1px solid rgba(225,216,255,.55);
+  background:rgba(10,10,20,.64);
+  color:#eee7ff;
+  font-size:9px;
+  letter-spacing:.2em;
+  backdrop-filter:blur(12px);
+}
+
+.project-brand.is-visible{
+  display:inline-flex;
 }
 
 .project-name{
@@ -724,15 +773,36 @@ button{
 
 .library-list{
   margin:22px 0 0;
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
 
+.library-group-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  color:#7d8992;
+  font-size:9px;
+  letter-spacing:.2em;
+}
+
+.library-group-head strong{
+  color:#e7ddff;
+  font-family:Orbitron,sans-serif;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.2em;
+}
+
+.library-group-head span:last-child{
+  color:#58646d;
+}
+
+.library-group-grid{
   display:grid;
-
-  grid-template-columns:
-    repeat(
-      auto-fill,
-      minmax(270px,1fr)
-    );
-
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
   gap:10px;
 }
 
@@ -903,6 +973,60 @@ button{
   color:var(--accent);
 }
 
+.lib-item--brand{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  border-color:rgba(193,184,255,.26);
+  background:#0b0b13;
+}
+
+.lib-item--brand .lib-visual{
+  flex:none;
+  height:150px;
+  border-right:0;
+  border-bottom:1px solid rgba(193,184,255,.24);
+  background-image:
+    linear-gradient(180deg,rgba(6,7,13,.03),rgba(6,7,13,.38)),
+    var(--project-banner);
+  background-position:center;
+  background-size:cover;
+}
+
+.lib-item--brand .lib-visual:before{
+  inset:0;
+  background:linear-gradient(110deg,rgba(6,7,13,.24),transparent 75%);
+  transform:none;
+}
+
+.lib-item--brand .lib-symbol{
+  inset:auto 10px 10px auto;
+  display:grid;
+  width:27px;
+  height:27px;
+  border:1px solid rgba(238,231,255,.7);
+  background:rgba(9,9,18,.68);
+  font-size:11px;
+  color:#eee7ff;
+  backdrop-filter:blur(10px);
+}
+
+.lib-item--brand .lib-info{
+  padding:13px 14px 34px;
+}
+
+.lib-item--brand .lib-name{
+  color:#f0ebff;
+}
+
+.lib-item--brand .lib-type{
+  color:#aaa0c9;
+}
+
+.lib-item--brand .lib-usage{
+  color:#68647a;
+}
+
 .lib-badge{
   position:absolute;
 
@@ -1031,6 +1155,10 @@ button{
   }
 
   .library-list{
+    gap:8px;
+  }
+
+  .library-group-grid{
     grid-template-columns:1fr;
     gap:8px;
   }
@@ -1240,6 +1368,21 @@ button{
    PROJETOS
 ========================================================= */
 
+function urlSeed(url){
+
+  let hash = 2166136261;
+
+  for(let index = 0; index < url.length; index++){
+    hash = Math.imul(
+      hash ^ url.charCodeAt(index),
+      16777619
+    );
+  }
+
+  return hash >>> 0;
+
+}
+
 const projects = [
 
   {
@@ -1343,11 +1486,14 @@ const projects = [
 
   {
     id:"fit-app",
-    name:"FITAPP",
+    name:"DABLIU.FIT",
     type:"APP · FITNESS",
     desc:"Seu espaço digital para academia e treino.",
-    url:"https://dabliu.fit",
-    theme:"fit"
+    url:"https://dabliu.fit/",
+    theme:"fit",
+    collection:"dablius",
+    banner:"assets/dablius-fit.jpg",
+    seed:urlSeed("https://dabliu.fit/")
   },
 
   {
@@ -1371,10 +1517,13 @@ const projects = [
   {
     id:"dabliu-notes",
     name:"DABLIU NOTES",
-    type:"APP · PRODUTIVIDADE",
-    desc:"Anote ideias e mantenha suas notas organizadas.",
-    url:"https://dabliu-notes.onrender.com/",
-    theme:"notes"
+    type:"APP · NOTAS",
+    desc:"Um espaço tranquilo para guardar o que importa.",
+    url:"https://dabliunotes.space/",
+    theme:"notes",
+    collection:"dablius",
+    banner:"assets/dablius-notes.jpg",
+    seed:urlSeed("https://dabliunotes.space/")
   },
 
   {
@@ -1402,6 +1551,30 @@ const projects = [
     desc:"Um cronômetro simples para medir o tempo das atividades.",
     url:"https://c-r-o-n-o-m-e-t-r-e.onrender.com/",
     theme:"tools"
+  },
+
+  {
+    id:"dabliu-games",
+    name:"PARRY",
+    type:"GAME · SOCIAL",
+    desc:"Jogos para reunir todo mundo e jogar junto.",
+    url:"https://dabliugames.space/",
+    theme:"games",
+    collection:"dablius",
+    banner:"assets/dablius-games.jpg",
+    seed:urlSeed("https://dabliugames.space/")
+  },
+
+  {
+    id:"dabliu-chess",
+    name:"DABLIU CHESS",
+    type:"GAME · XADREZ",
+    desc:"Analise partidas e jogue xadrez contra o Stockfish.",
+    url:"https://dabliuchess.space/",
+    theme:"chess",
+    collection:"dablius",
+    banner:"assets/dablius-chess.jpg",
+    seed:urlSeed("https://dabliuchess.space/")
   }
 
 ];
@@ -1997,7 +2170,37 @@ function build(){
 
   dots.innerHTML = "";
 
-  list.innerHTML = "";
+  list.innerHTML = `
+
+    <section>
+
+      <div class="library-group-head">
+        <strong>DABLIU’S</strong>
+        <span>DOMÍNIOS PRÓPRIOS · ${projects.filter(project => project.collection === "dablius").length} APPS</span>
+      </div>
+
+      <div class="library-group-grid" id="dabliuCollection"></div>
+
+    </section>
+
+    <section>
+
+      <div class="library-group-head">
+        <strong>CATÁLOGO</strong>
+        <span>OUTROS PROJETOS</span>
+      </div>
+
+      <div class="library-group-grid" id="projectCollection"></div>
+
+    </section>
+
+  `;
+
+  const dabliuCollection =
+    document.getElementById("dabliuCollection");
+
+  const projectCollection =
+    document.getElementById("projectCollection");
 
 
   /*
@@ -2021,10 +2224,16 @@ function build(){
 
         <div
           class="project-art"
-          data-theme="${project.theme}">
+          data-theme="${project.theme}"
+          data-collection="${project.collection || ""}"
+          style="${project.banner ? `--project-banner:url('${project.banner}')` : ""}">
 
           <div
             class="project-copy">
+
+            <div class="project-brand ${project.collection === "dablius" ? "is-visible" : ""}">
+              ${project.collection === "dablius" ? "DABLIU’S · URL PRÓPRIA" : ""}
+            </div>
 
             <div
               class="project-index">
@@ -2139,8 +2348,14 @@ function build(){
         );
 
 
+      const isDablius =
+        project.collection === "dablius";
+
+
       item.className =
-        "lib-item";
+        isDablius
+          ? "lib-item lib-item--brand"
+          : "lib-item";
 
 
       let symbol;
@@ -2187,7 +2402,9 @@ function build(){
 
         <div
           class="lib-visual"
-          data-theme="${project.theme}">
+          data-theme="${project.theme}"
+          data-collection="${project.collection || ""}"
+          style="${project.banner ? `--project-banner:url('${project.banner}')` : ""}">
 
           <div
             class="lib-symbol">
@@ -2217,7 +2434,7 @@ function build(){
               class="lib-num">
 
               ${String(
-                position + 1
+                (isDablius ? dabliuCollection : projectCollection).children.length + 1
               ).padStart(2,"0")}
 
             </span>
@@ -2276,9 +2493,7 @@ function build(){
       };
 
 
-      list.appendChild(
-        item
-      );
+      (isDablius ? dabliuCollection : projectCollection).appendChild(item);
 
     }
   );
